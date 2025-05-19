@@ -1,5 +1,7 @@
 # LLM Engineering Platform
 
+[English](./README.md) | [简体中文](./README_zh.md)
+
 A platform for building, deploying, and managing sophisticated LLM-powered agents and applications using LangGraph.
 
 ## Overview

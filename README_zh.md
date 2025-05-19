@@ -1,6 +1,6 @@
-[English Version](./README.md)
-
 # LLM 工程平台
+
+[English](./README.md) | [简体中文](./README_zh.md)
 
 一个用于构建、部署和管理复杂 LLM 驱动的代理和应用的平台，基于 LangGraph。
 
