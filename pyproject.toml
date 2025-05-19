@@ -1,0 +1,119 @@
+[tool.poetry] # Example if using Poetry. uv can also read this.
+# If not using Poetry, you might simplify this to a PEP 621 [project] table
+# which uv fully supports.
+name = "llm-engineering-platform"
+version = "0.1.0"
+description = "A platform for building resilient language agents using LangGraph."
+authors = ["Ryan Zhu <your.email@example.com>"] # Replace with actual email
+readme = "README.md"
+license = "MIT" # Or your chosen license
+packages = [{include = "src"}, {include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.9" # Specify your Python version compatibility
+langchain = ">=0.1.0,<0.2.0"
+langgraph = ">=0.0.30,<0.1.0"
+langchain-core = ">=0.1.0,<0.2.0"
+langchain-text-splitters = ">=0.0.1,<0.1.0"
+langchain-openai = ">=0.1.0,<0.2.0"
+langchain-anthropic = {version = ">=0.1.0,<0.2.0", optional = true}
+# langchain-google-genai = {version = "...", optional = true}
+# langchain-cohere = {version = "...", optional = true}
+langchain-community = {version = ">=0.0.1,<0.1.0", optional = true} # For Ollama, etc.
+jinja2 = ">=3.0.0,<4.0.0"
+fastapi = ">=0.100.0,<0.112.0"
+uvicorn = {extras = ["standard"], version = ">=0.20.0,<0.30.0"}
+pydantic = ">=2.0.0,<3.0.0"
+pydantic-settings = ">=2.0.0,<3.0.0"
+httpx = ">=0.24.0,<0.28.0"
+aiohttp = {version = ">=3.8.0,<4.0.0", optional = true}
+python-dotenv = ">=1.0.0,<2.0.0"
+# Vector Store Clients (mark as optional if not always needed)
+qdrant-client = {version = ">=1.7.0,<2.0.0", optional = true}
+# chromadb = {version = ">=0.4.0,<0.5.0", optional = true}
+# faiss-cpu = {version = "...", optional = true} # or faiss-gpu
+tiktoken = {version = ">=0.5.0,<0.8.0", optional = true}
+
+
+[tool.poetry.group.dev.dependencies] # Development dependencies
+pytest = ">=7.0.0,<9.0.0"
+pytest-asyncio = ">=0.20.0,<0.24.0"
+coverage = {extras = ["toml"], version = ">=7.0.0,<8.0.0"}
+ruff = ">=0.1.0,<0.5.0" # Linter and formatter, uv can run ruff
+# black = ">=23.0.0,<25.0.0" # Alternative formatter
+pre-commit = ">=3.0.0,<4.0.0" # For git hooks
+
+[tool.poetry.extras]
+anthropic = ["langchain-anthropic"]
+google = ["langchain-google-genai"]
+cohere = ["langchain-cohere"]
+community = ["langchain-community"]
+qdrant = ["qdrant-client"]
+chroma = ["chromadb"]
+faiss = ["faiss-cpu"] # or "faiss-gpu"
+openai_tiktoken = ["tiktoken"]
+all_llms = ["langchain-anthropic", "langchain-google-genai", "langchain-cohere", "langchain-community"]
+all_vectorstores = ["qdrant-client", "chromadb", "faiss-cpu"]
+
+
+[build-system] # Needed for tools like pip and uv to build the project
+requires = ["poetry-core>=1.0.0"] # If using Poetry as the build backend
+build-backend = "poetry.core.masonry.api"
+# If not using Poetry, you might use Hatchling, setuptools, or Flit.
+# For a simple project primarily using requirements.txt, this section might be minimal
+# or geared towards setuptools if you intend to build a wheel/sdist.
+# uv itself does not require this section to install from requirements.txt or pyproject.toml (PEP 621).
+
+[tool.ruff]
+# See https://docs.astral.sh/ruff/configuration/ for all options
+line-length = 88 # Or 100, 120, etc.
+indent-width = 4
+target-version = "py39" # Your minimum Python version
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # Pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "E501", # Line too long (handled by formatter)
+    "B008", # Do not perform function calls in argument defaults (sometimes intended)
+]
+# fixable = ["ALL"] # Auto-fix all possible issues
+# unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-string-normalization = false
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --cov=src --cov-report=term-missing --cov-report=xml" # Add options here
+testpaths = [
+    "tests/unit",
+    "tests/integration",
+]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_mode = "auto" # For pytest-asyncio
+
+[tool.coverage.run]
+source = ["src", "app"] # Include app directory in coverage if it has significant logic
+omit = [
+    "src/*/__init__.py", 
+    "app/*/__init__.py",
+    "src/config/settings.py", 
+]
+
+[tool.coverage.report]
+fail_under = 70 # Example: fail if coverage is below 70%
+show_missing = true
