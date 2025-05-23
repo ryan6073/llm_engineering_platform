@@ -1,0 +1,8 @@
+# config.yaml
+model: /home/furh/nas_data/zjs_model/Qwen/
+host: 0.0.0.0
+port: 8000
+trust-remote-code: true
+tensor-parallel-size: 1
+enable-reasoning: true
+reasoning-parser: deepseek_r1
