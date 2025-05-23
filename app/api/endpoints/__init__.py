@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 """
 @Project : llm_engineering_platform
-@File    : app/__init__.py
+@File    : app/api/endpoints/__init__.py
 @Author  : Ryan Zhu
 @Date    : 2025/05/19 01:31
 """
 
-# app/__init__.py
-# 初始化 'app' 包。
+# app/api/endpoints/__init__.py
+from .assessment import router as assessment_router
